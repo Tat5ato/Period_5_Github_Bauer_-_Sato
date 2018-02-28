@@ -1,0 +1,58 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Media;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Audio_GUI
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+        public void playSimpleSound(string wavFile)
+        {
+            SoundPlayer simpleSound = new SoundPlayer(wavFile);
+            try
+            {
+                simpleSound.SoundLocation = wavFile;
+                simpleSound.Load();
+                simpleSound.Play();
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine("Wav File Trouble: {0} \r\n {1} \r\n {2}", wavFile, ex.Message, ex.StackTrace);
+            }
+        }
+        private void open_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog1 = new OpenFileDialog();
+            if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                this.textBox1.Text = openFileDialog1.FileName;
+            }
+        }
+
+        private void play_Click(object sender, EventArgs e)
+        {
+            try {
+                System.Media.SoundPlayer player = new System.Media.SoundPlayer();
+                player.SoundLocation = textBox1.Text;
+                player.Load();
+                player.PlaySync();
+
+            }
+            catch (Win32Exception ex){
+                MessageBox.Show(ex.Message);
+            }
+        }
+    }
+}
